@@ -40,4 +40,12 @@ describe 'claus' do
     assert_equal false, claus.match?(foo: 1, bar: {baz: 3})
     assert_equal false, claus.match?(foo: 1)
   end
+
+  it 'should match wildcards' do
+    claus = Claus.new(foo: 1, bar: '*')
+
+    assert_equal true,  claus.match?(foo: 1, bar: 1)
+    assert_equal false, claus.match?(foo: 1)
+    assert_equal false, claus.match?(foo: 2)
+  end
 end

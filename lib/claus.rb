@@ -44,7 +44,7 @@ class Claus
       end
 
       def match? value
-        ast == value
+        ast == '*' || ast == value
       end
     end # Node
 
@@ -62,8 +62,9 @@ class Claus
       end
 
       def match? value
+        return false unless ::Hash === value
         ast.each do |k, node|
-          return false unless ::Hash === value && node.match?(value[k])
+          return false unless value.key?(k) && node.match?(value[k])
         end
         true
       end
