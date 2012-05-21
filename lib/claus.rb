@@ -15,6 +15,8 @@
 #   claus.match?(baz: 3)                  #=> false
 #
 class Claus
+  attr_reader :ast
+
   def initialize expression
     @ast = compile(expression)
   end
@@ -26,9 +28,10 @@ class Claus
   protected
     def compile expression
       case expression
-        when Hash  then AST::Hash.new(expression)
-        when Array then AST::List.new(expression)
-        else       raise ArgumentError, "invalid expression at #{expression}"
+        when Hash      then AST::Hash.new(expression)
+        when Array     then AST::List.new(expression)
+        when AST::Node then expression
+        else           raise ArgumentError, "invalid expression at #{expression}"
       end
     end
 
@@ -56,7 +59,8 @@ class Claus
             when ::Hash   then h[k] = Hash.new(v)
             when ::Array  then h[k] = List.new(v)
             when ::Range  then h[k] = List.new(v)
-            else               h[k] = Node.new(v)
+            when Claus    then h[k] = v.ast
+            else               h[k] = v.kind_of?(Node) ? v : Node.new(v)
           end
         end
       end
@@ -74,10 +78,11 @@ class Claus
       def compile expression
         expression.map do |v|
           case v
-            when ::Hash   then Hash.new(v)
-            when ::Array  then List.new(v)
-            when ::Range  then List.new(v)
-            else               Node.new(v)
+            when ::Hash     then Hash.new(v)
+            when ::Array    then List.new(v)
+            when ::Range    then List.new(v)
+            when Claus      then v.ast
+            else            v.kind_of?(Node) ? v : Node.new(v)
           end
         end
       end

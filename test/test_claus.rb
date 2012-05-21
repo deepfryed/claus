@@ -48,4 +48,12 @@ describe 'claus' do
     assert_equal false, claus.match?(foo: 1)
     assert_equal false, claus.match?(foo: 2)
   end
+
+  it 'should allow ast chaining' do
+    claus = Claus.new([Claus.new(foo: 1), Claus.new(bar: 2).ast])
+    assert_equal true,  claus.match?(foo: 1)
+    assert_equal true,  claus.match?(bar: 2)
+    assert_equal false, claus.match?(foo: 2)
+    assert_equal false, claus.match?(bar: 1)
+  end
 end
