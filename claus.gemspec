@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bharanee Rathna"]
-  s.date = "2012-05-18"
+  s.date = "2012-05-21"
   s.description = "simple hash / array based rule matching engine"
   s.email = ["deepfryed@gmail.com"]
   s.files = ["test/helper.rb", "test/test_claus.rb", "lib/claus.rb", "README.md"]
